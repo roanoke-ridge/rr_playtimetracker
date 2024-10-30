@@ -3,4 +3,7 @@ AddEventHandler("vorp:initNewCharacter", SelectedCharacterHandler)
 AddEventHandler("playerDropped", PlayerDroppedHandler)
 AddEventHandler("onResourceStart", ResourceStartHandler)
 AddEventHandler("onResourceStop", ResourceStopHandler)
-RegisterCommand("playtime", PlaytimeCommandHandler, false)
+
+if Config.PlaytimeCommand then
+  RegisterCommand("playtime", PlaytimeCommandHandler, false)
+end
