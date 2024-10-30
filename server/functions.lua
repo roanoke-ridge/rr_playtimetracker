@@ -32,6 +32,19 @@ local function log_all_players()
   end
 end
 
+function FormatTime(seconds)
+  local hours = math.floor(seconds / 3600)
+  local minutes = math.floor((seconds % 3600) / 60)
+
+  if hours > 0 then
+    return string.format("%02d hour(s), %02d minute(s)", hours, minutes)
+  elseif minutes > 0 then
+    return string.format("%02d minute(s)", minutes)
+  end
+
+  return nil
+end
+
 function SelectedCharacterHandler(src, character)
   times[tostring(character.charIdentifier)] = GetGameTimer()
 end
@@ -70,4 +83,16 @@ end
 function ResourceStopHandler(resourceName)
   if resourceName ~= GetCurrentResourceName() then return end
   log_all_players()
+end
+
+function PlaytimeCommandHandler(source, args, rawCommand)
+  local user = Core.getUser(source)
+  if not user then return end
+
+  local character = user.getUsedCharacter
+  local result = MySQL.single.await("SELECT `rr_playtime` FROM `characters` WHERE `charIdentifier` = ?", { character.charIdentifier })
+
+  local seconds = math.floor(result.rr_playtime / 1000)
+  local formatted = FormatTime(seconds)
+  Core.NotifyRightTip(source, "You've played for " .. (formatted or "less than a minute"))
 end
