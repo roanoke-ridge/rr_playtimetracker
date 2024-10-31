@@ -1,4 +1,5 @@
 Config = {
   AutoSaveInterval = 5, -- in minutes
-  PlaytimeCommand = false, -- if true, enables /playtime command
+  PlaytimeCommand = 'playtime', -- name of the /command that lets users check their playtime
+  PlaytimeCommandEnabled = false, -- if true, enables /playtime command
 }
